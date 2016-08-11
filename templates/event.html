@@ -1,0 +1,96 @@
+<!-- template: event -->
+{% extends "base.html" %}
+
+{% block nav %}
+    <ul class="nav navbar-nav">
+        {% if 'username' in session %}
+        <li><a href="{{url_for('newTelling', event_id=event_id)}}"><span class="glyphicon glyphicon-comment" aria-hidden="true"><span style="font-family:Lato;"> New Telling</span></span></a></li>
+        {% else %}
+        <li><span class="menuLoginMsg">Please <a href="\login">login</a> to contribute!</span></li>
+        {% endif %}
+    </ul>
+{% endblock %}
+
+{% block auth_menu %}
+    <div class="auth_menu">
+        {% if 'username' in session %}
+            <span id="loggedInUser">{{session['username']}}</span>
+            <a href='\disconnect'>Log Out</a>
+        {% else %}
+            <a href='\login'>Log In</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row page_title">
+        <div class="col-md-12">
+            <h2>Event: {{event.name}}</h2>
+        </div>
+    </div>
+
+    <div class="row flash_msgs">
+        <div class="col-md-12">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flashUL">
+                        {% for message in messages %}
+                        <li>
+                            <img src="{{url_for('static', filename='small_info_icon.png')}}">
+                            <strong>{{message}}</strong>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+
+    <div class="row page_content">
+        <div class='col-sm-2 field_label'>Description:</div>
+        <div class='col-sm-6 field'>{{event.description}}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 comment_roll">
+            {% if tellings %}
+                <div class="row view_subtitle">
+                    <div class="col-sm-12">
+                        <h3 style="font-size: 2.5em;">Tellings</h3>
+                    </div>
+                </div>
+            {% endif %}
+            {% for t in tellings %}
+                <div class="row view">
+                        <div class="col-sm-4">
+                            <div>
+                                Telling#: {{t.id}}
+                                <span>
+                                    {% if 'username' in session and t.user_id == user_id %}
+                                        <span>
+                                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                        </span>
+                                        <a href="{{url_for('deleteTelling', event_id=event_id, telling_id=t.id)}}"> delete</a>
+                                        |
+                                        <a href="{{url_for('editTelling', event_id=event_id, telling_id=t.id)}}"> edit</a>
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div>
+                                {% if t.mediaFilepath %}
+                                    <img class="imgMedia" src="{{url_for('static', filename=t.mediaFilepath)}}" style="width:214px;">
+                                {% else %}
+                                    (No media file associated.)
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div><h4>{{t.title}}</h4></div>
+                            <div>{{t.description}}</div>
+                        </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</form>
+{% endblock %}

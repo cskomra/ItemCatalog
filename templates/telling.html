@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>{{restaurant.name}}</title>
+        <!-- research flask for handling css in templates -->
+        <link rel=stylesheet type=text/css href="{{url_for('static', filename='styles.css')}}">
+    </head>
+    <body>
+        <h1>{{restaurant.name}}</h1>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li><strong>{{message}}</strong></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <a href="new">Create New Item</a>
+
+        {% for i in items %}
+        <div>
+            <p>{{i.name}}
+            <p>{{i.description}}
+            <p>{{i.price}}
+            <p><a href="{{url_for('editMenuItem', restaurant_id=restaurant.id, menu_id=i.id)}}">Edit</a>
+            <p><a href="{{url_for('deleteMenuItem', restaurant_id=restaurant.id, menu_id=i.id)}}">Delete</a>
+        </div><br>
+        {% endfor %}
+
+    </body>
+</html>

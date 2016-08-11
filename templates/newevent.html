@@ -1,0 +1,80 @@
+<!-- template: newevent -->
+{% extends "base.html" %}
+
+
+{% block nav %}
+    <ul class="nav navbar-nav">
+        <li><a href='/'><span class="glyphicon glyphicon-home" aria-hidden="true"><span style="font-family:Lato;"> Home</span></span></a></li>
+    </ul>
+{% endblock %}
+
+
+{% block auth_menu %}
+    <div class="auth_menu">
+        {% if 'username' in session %}
+            <span id="loggedInUser">{{session['username']}}</span>
+            <a href='\disconnect'>Log Out</a>
+        {% else %}
+            <a href='\login'>Log In</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="row page_title">
+        <div class="col-md-12">
+            <h2>New Event</h2>
+        </div>
+    </div>
+
+    <div class="row page_content">
+        <div class="col-md-12">
+            <form action="{{url_for('newEvent')}}" method="post">
+                <div class="row">
+                    <div class="col-md-2 field_label">
+                        <label for="eventType">Event Type</label>
+                    </div>
+                    <div class="col-md-7 field">
+                        <select name="eventType" required>
+                            <option value="holiday">Holiday</option>
+                            <option value="birthday">Birthday</option>
+                            <option value="day-to-day">Day to Day</option>
+                            <option selected value="general">General</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 field_label">
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="col-md-7 field">
+                        <input type="text" name="name" value="{{name}}" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 field_label">
+                        <label for="location">Location</label>
+                    </div>
+                    <div class="col-md-7 field">
+                        <input type="text" name="location" value="{{location}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 field_label">
+                        <label for="description">Description</label>
+                    </div>
+                    <div class="col-md-7 field">
+                        <textarea name="description">{{description}}</textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 form_actions">
+                        <input type="submit" class="btn" name="submit" value="Submit">
+                        <input type="button" class="btn" value="Cancel" onClick="window.history.go(-1)">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

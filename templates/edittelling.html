@@ -1,0 +1,74 @@
+<!-- template: edittelling -->
+{% extends "base.html" %}
+
+
+{% block nav %}
+    <ul class="nav navbar-nav">
+        <li><a href='/'><span class="glyphicon glyphicon-home" aria-hidden="true"><span style="font-family:Lato;"> Home</span></span></a></li>
+    </ul>
+{% endblock %}
+
+
+{% block auth_menu %}
+    <div class="auth_menu">
+        {% if isLoggedIn %}
+            <a href='\disconnect'>Log Out</a>
+        {% else %}
+            <a href='\login'>Log In</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="row page_title">
+        <div class="col-md-12">
+            <h2>Edit Telling: {{telling.title}}</h2>
+        </div>
+    </div>
+
+    <div class="row page_content">
+        <div class="col-md-12">
+            <form action="{{url_for('editTelling', event_id=event.id, telling_id=telling.id)}}" method="post">
+
+                <div class="row">
+                    <div class="col-md-2 field_label">
+                        <label for="mediaFilepath">Media file:</label>
+                    </div>
+                    <div class="col-md-7 field">
+                        <div class="field">Existing: {{telling.mediaFilepath}}</br>
+                            <img src="{{url_for('static', filename=telling.mediaFilepath)}}" style="width:214px;">
+                        </div>
+                        Replace Existing File: <input type="file" name="mediaFilepath">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2 field_label">
+                        <label for="title">Title</label>
+                    </div>
+                    <div class="col-md-7 field">
+                        <input type="text" name="title" value="{{telling.title}}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2 field_label">
+                        <label for="description">Description</label>
+                    </div>
+                    <div class="col-md-7 field">
+                        <textarea name="description">{{telling.description}}</textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 form_actions">
+                        <input type="submit" class="btn" name="submit" value="Submit">
+                        <a href="{{url_for('showEvent', event_id=event.id)}}">Cancel</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}
